@@ -1,0 +1,130 @@
+<!-- updateEmployee -->
+<div class="modal fade" id="updateEmployee" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Update Employee</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #employeeForm="ngForm" class="form-container" (ngSubmit)="onSubmit()">       
+          <div class="form-group" [class.has-error]="firstNameControl.invalid && firstNameControl.touched" [class.has-success]="firstNameControl.valid">
+            <label for="firstName">FirstName</label>
+            <input type="text" class="form-control" id="firstName" required #firstNameControl="ngModel" [(ngModel)]="employee.first_name" name="firstName" placeholder="FirstName">
+            <span class="help-block" *ngIf="firstNameControl.invalid && firstNameControl.touched">firstname is required</span>
+          </div>
+        
+          <div class="form-group" [class.has-error]="lastNameControl.invalid && lastNameControl.touched" [class.has-success]="firstNameControl.valid">
+            <label for="lastName">LastName</label>
+            <input type="text" class="form-control" id="lastName" required #lastNameControl="ngModel" [(ngModel)]="employee.last_name"  name="lastName" placeholder="LastName">
+            <span class="help-block" *ngIf="lastNameControl.invalid && lastNameControl.touched">lastname is required</span>
+          </div>
+          <div class="form-group" [class.has-error]="emailControl.invalid && emailControl.touched" [class.has-success]="firstNameControl.valid">
+              <label for="emailId">Email Address</label>
+              <input type="email" class="form-control" id="emailId" required #emailControl="ngModel" [(ngModel)]="employee.email" name="emailId" placeholder="EmailAddress">
+              <span class="help-block" *ngIf="emailControl.invalid && emailControl.touched">email is required</span>
+            </div>
+          
+          
+          <button type="submit" [disabled]="employeeForm.invalid" id="submit" class="btn btn-success btn-block" >Update</button>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<!-- add Modal -->
+<div id="addEmployee" class="modal fade"  data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addEmployee">Add Employee</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #employeeForm="ngForm" class="form-container" (ngSubmit)="onSubmitCreate()" >
+          
+          <div class="form-group" [class.has-error]="firstAddControl.invalid && firstAddControl.touched" [class.has-success]="firstAddControl.valid" >
+            <label for="firstName" class="control-label">FirstName</label>
+            <input type="text" class="form-control" id="firstName" required #firstAddControl="ngModel" [(ngModel)]="employee.first_name" name="firstName" placeholder="FirstName" autocomplete="off">
+            <span class="help-block" *ngIf="firstAddControl.invalid && firstAddControl.touched">firstname is required</span>
+            
+          </div>
+        
+          <div class="form-group" [class.has-error]="lastAddControl.invalid && lastAddControl.touched" [class.has-success]="lastAddControl.valid">
+            <label for="lastName">LastName</label>
+            <input type="text" class="form-control" id="lastName" required #lastAddControl="ngModel" [(ngModel)]="employee.last_name" name="lastName" placeholder="LastName">
+            <span class="help-block" *ngIf="lastAddControl.invalid && lastAddControl.touched">lastname is required</span>
+          </div>
+          <div class="form-group" [class.has-error]="emailAddControl.invalid && emailAddControl.touched" [class.has-success]="emailAddControl.valid">
+              <label for="emailId">Email Address</label>
+              <input type="email" class="form-control" id="emailId" required #emailAddControl="ngModel" [(ngModel)]="employee.email" name="emailId" placeholder="EmailAddress">
+              <span class="help-block" *ngIf="emailAddControl.invalid && emailAddControl.touched">email is required</span>
+            </div>
+          
+          
+          <button type="submit"[disabled]="employeeForm.invalid" id="submit" class="btn btn-success btn-block" >Submit</button>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+  <div class="container">
+    
+      <div class="card">
+        
+        <div class="card-body">
+          <h5 class="card-title">Employee List</h5>
+          <div class="row">
+            <div class="col md 12 text-right">
+              <button class="btn btn-success badge-pill" style="width: 80px;" data-toggle="modal" data-target="#addEmployee">Add</button>
+            </div>
+          </div>
+          <br>
+          <table class="table table-dark table-hover table-bordered">
+            <thead>
+              <tr>
+                <th>S/N</th>
+                <th>FirstName</th>
+                <th>Lastname</th>
+                <th>Email</th>
+                <th class="text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let employee of employees let myIndex = index">
+                <td>{{myIndex + 1}}</td>
+                <td>{{employee.first_name}}</td>
+                <td>{{employee.last_name}}</td>
+                <td>{{employee.email}}</td>
+                <td class="text-right">
+                  <button (click)="employeeDetails(employee.id)" class="btn btn-primary badge-pill" data-toggle="modal" data-target="#updateEmployee">Update</button>
+                  <button  class="btn btn-danger  badge-pill" style="margin-left: 10px;" 
+                  mwlConfirmationPopover
+                  [popoverMessage]="popoverMessage"
+                  placement="left"
+                  (confirm)="deleteEmployee(employee.id)"
+                  (cancel)="cancelClicked = true">Delete</button>
+                    
+                    
+                </td>
+              </tr>
+            </tbody>
+          </table>
+    
+        </div>
+        
+      </div>
+
+    
+  </div>
+
+  
+  
+  

@@ -1,0 +1,30 @@
+.has-error label, .has-error span{
+    color: red;
+
+}
+.has-error input[type=text] {
+    border: 2px solid red;
+    outline: none;
+}
+.has-success label{
+    color: green;
+
+}
+.has-success input[type=text] {
+    border: 2px solid green;
+    outline: none;
+}
+.has-error input[type=email] {
+    border: 2px solid red;
+    outline: none;
+}
+
+.has-success input[type=email] {
+    border: 2px solid green;
+    outline: none;
+}
+
+.card{
+    margin-top: 35px;
+}
+
