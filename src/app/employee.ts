@@ -4,5 +4,4 @@ export class Employee {
     last_name: string;
     email: string;
     active: boolean;
-  }
-  
+   };

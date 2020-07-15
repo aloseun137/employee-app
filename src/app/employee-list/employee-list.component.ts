@@ -1,26 +1,11 @@
 
 import { Component, OnInit } from '@angular/core';
-import { EmployeeService } from './../employee.service'
-import { Router } from '@angular/router'
+import { EmployeeService } from './../employee.service';
+import { Router } from '@angular/router';
 import { Employee } from './../employee';
-import { EmployeeDetailsComponent } from './../employee-details/employee-details.component';
 import { from } from 'rxjs';
-import { NotificationService } from './../notification.service'
 import { ToastrService } from 'ngx-toastr';
-
-
-
-
-
 declare var $: any;
-
-interface myData{
-  data: Object
-}
-
-
-
-
 @Component({
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
@@ -28,136 +13,134 @@ interface myData{
 })
 
 export class EmployeeListComponent implements OnInit {
-  public popoverTitle:string = 'popovertitle'
-  public popoverMessage:string = 'confirm delete!!!'
-  public cancelClicked:boolean = true
-  public confirmClicked:any ='deleteEmployee(employee.id)'
-  title: string = 'toaster-not';
+  public popoverTitle = 'popovertitle';
+  public popoverMessage = 'confirm delete!!!';
+  public cancelClicked = true;
+  public confirmClicked = 'deleteEmployee(employee.id)';
+  title = 'toaster-not';
   employee: Employee;
-  update_id: number;
+  updateId: number;
   employees = {};
-  
-  
- 
- 
-  
 
-  constructor(private myService: EmployeeService,
-    private router: Router, private toastr: ToastrService ) {
-      
-     }
+
+
+
+
+
+  constructor(private myService: EmployeeService, private router: Router, private toastr: ToastrService ) {
+
+    }
 
   ngOnInit(): void {
-    
-    $('#submit').click(function() {
+
+    $('#submit').click( () => {
 
       $('.modal').removeClass('in');
       $('.modal').removeClass('show');
-      $('.modal').attr("aria-hidden","true");
-      $('.modal').css("display", "none");
+      $('.modal').attr('aria-hidden', 'true');
+      $('.modal').css('display', 'none');
       $('.modal-backdrop').remove();
       $('body').removeClass('modal-open');
-      
-      
+
+
 
    });
-  
+
     this.employee = new Employee();
-    this.myService.getEmployee(this.update_id)
+    this.myService.getEmployee(this.updateId)
     .subscribe(data => {
       this.employee = data.data;
       }, error => console.log(error));
-    
-    this.reloadData() 
+
+    this.reloadData();
   }
 
   newEmployee(): void {
     this.employee = new Employee();
   }
 
-  
-  reloadData(){
+
+  reloadData() {
     this.myService.getEmployeeList().subscribe(data => {
       this.employees = data.data;
-      
-    })
+
+    });
   }
 
-  deleteEmployee(id){
-    this.myService.getEmployee(id).subscribe(data =>{
+  deleteEmployee(id) {
+    this.myService.getEmployee(id).subscribe(data => {
       this.title = data.data.first_name;
       this.toastr.success(`${this.title} Deleted !!`);
     }
 
 
-    )
+    );
     this.myService.deleteEmployee(id).subscribe(data => {
 
-      
-    })
+
+    });
     this.reloadData();
-    window.location.reload()
-    
+    window.location.reload();
+
   }
-  
-  employeeDetails(id: number){
-    this.update_id = id;
+
+  employeeDetails(id: number) {
+    this.updateId = id;
     this.employee = new Employee();
     this.myService.getEmployee(id)
     .subscribe(data => {
       this.employee = data.data;
   }, error => console.log(error));
-    
-  }
-  
 
-  onSubmit(){
-    
-    this.myService.updateEmployee(this.update_id, this.employee).subscribe(data => {
-      
+  }
+
+
+  onSubmit() {
+
+    this.myService.updateEmployee(this.updateId, this.employee).subscribe(data => {
+      console.log(data);
+
+
       this.title = data.first_name;
       this.reloadData();
       this.toastr.success(`${this.title} Updated successfully !!`);
-      window.location.reload()
-      
-    })
-    
-    
+      window.location.reload();
+
+    });
+
+
   }
 
-  onSubmitCreate(){
-    
-    const Dom = document.getElementById("addEmployee")
-    const DomSubmit = document.getElementById("submit")
-    Dom.style.display =  "none";
+  onSubmitCreate() {
+
+    const Dom = document.getElementById('addEmployee');
+    const DomSubmit = document.getElementById('submit');
+    Dom.style.display = 'none';
     Dom.classList.remove('in');
     Dom.classList.remove('modal-backdrop');
     Dom.classList.remove('show');
     $('.modal-backdrop').remove();
     $('body').removeClass('modal-open');
-    
-    
+
+
     this.myService.createEmployee(this.employee).subscribe(data => {
       console.log(data);
-      
+
       this.title = data.first_name;
       this.toastr.success(`${this.title} Added successfully !!`);
-
-      this.employee.first_name = "";
-      this.employee.last_name = "";
-      this.employee.email = "";
       this.reloadData();
       this.router.navigate(['/employees']);
-      window.location.reload()
-      
-      
-    })
-    
+      window.location.reload();
+
+
+    });
+
 
   }
-  
 
- 
+
+
+
 
 }
 
